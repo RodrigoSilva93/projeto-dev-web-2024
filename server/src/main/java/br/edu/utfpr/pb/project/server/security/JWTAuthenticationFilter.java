@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
@@ -48,8 +49,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
     }
 
-
-
     @Override
     protected void successfulAuthentication(
             HttpServletRequest request,
@@ -63,8 +62,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET));
 
         response.setContentType("application/json");
+        // {token : "123.456.789"}
         response.getWriter().write(new ObjectMapper().writeValueAsString(
             new AuthenticationResponseDto(token)
         ));
+    }
+
+    @Override
+    protected AuthenticationSuccessHandler getSuccessHandler() {
+        return super.getSuccessHandler();
     }
 }
