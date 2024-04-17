@@ -53,7 +53,5 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                     user.getAuthorities());
         }
         return null;
-
-
     }
 }

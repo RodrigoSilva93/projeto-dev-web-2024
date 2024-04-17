@@ -65,6 +65,11 @@ public class User implements UserDetails {
         return AuthorityUtils.createAuthorityList("ROLE_USER");
     }
 
+    //TODO verificar, estava retornando erro sem este override
+    @Override
+    public String getUsername() {
+        return "";
+    }
 
     @Override
     public boolean isAccountNonExpired() {
