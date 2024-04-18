@@ -1,5 +1,6 @@
 package br.edu.utfpr.pb.project.server.model;
 
+import br.edu.utfpr.pb.project.server.annotation.UniqueCpf;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -43,6 +44,7 @@ public class User implements UserDetails {
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.gender.NotNull}")
     private String gender;
 
+    @UniqueCpf
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.password.NotNull}")
     @Size(max = 14)
     private String cpf;
@@ -81,7 +83,7 @@ public class User implements UserDetails {
     //TODO verificar, estava retornando erro sem este override
     @Override
     public String getUsername() {
-        return "";
+        return email;
     }
 
     @Override
