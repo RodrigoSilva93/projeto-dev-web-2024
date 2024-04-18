@@ -25,39 +25,52 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.name.NotNull}")
     private String name;
 
-    @NotNull(message = "Email cannot be null")
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.email.NotNull}")
     private String email;
 
-    @NotNull
-    @Size(min = 6)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$",
-            message = "{br.edu.utfpr.pb.project.server.user.password.Pattern}")
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.password.NotNull}")
+    @Size(min = 6, message = "{br.edu.utfpr.pb.project.server.user.password.Size}")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "{br.edu.utfpr.pb.project.server.user.password.Pattern}")
     private String password;
 
-    @NotNull
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.birthDate.NotNull}")
+    @Pattern(regexp = "\\d+", message = "{br.edu.utfpr.pb.project.server.user.birthDate.Pattern}")
     private Date birthDate;
 
-    @NotNull
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.gender.NotNull}")
     private String gender;
 
-    @NotNull
-    @Size(max = 14, message = "Cpf must be 14 characters")
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.password.NotNull}")
+    @Size(max = 14)
     private String cpf;
 
-    @NotNull
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.phone.NotNull}")
     private String phone;
 
-    @NotNull
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.cep.NotNull}")
     private String cep;
+
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.country.NotNull}")
     private String country;
+
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.state.NotNull}")
     private String state;
+
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.city.NotNull}")
     private String city;
+
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.district.NotNull}")
     private String district;
+
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.street.NotNull}")
     private String street;
+
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.number.NotNull}")
     private Integer number;
+
     private String reference;
 
     @Override
