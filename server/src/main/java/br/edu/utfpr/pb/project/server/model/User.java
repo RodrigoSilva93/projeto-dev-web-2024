@@ -29,6 +29,7 @@ public class User implements UserDetails {
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.name.NotNull}")
     private String name;
 
+    @UniqueEmail
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.email.NotNull}")
     private String email;
 
