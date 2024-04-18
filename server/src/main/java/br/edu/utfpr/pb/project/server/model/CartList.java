@@ -23,6 +23,7 @@ public class CartList {
 
     private BigDecimal price;
 
+    @NotNull
     private Integer quantity;
 
 }

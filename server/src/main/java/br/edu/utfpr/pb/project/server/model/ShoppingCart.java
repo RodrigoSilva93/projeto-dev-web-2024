@@ -19,8 +19,10 @@ public class ShoppingCart {
     @Column(name = "id_shopping_cart")
     private Long id;
 
+    @NotNull
     private Boolean status;
 
+    @NotNull
     private Date dateTime;
 
     @ManyToOne

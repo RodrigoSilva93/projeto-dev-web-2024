@@ -19,10 +19,18 @@ public class Product {
     @Column(name = "id_product")
     private Long id;
 
+    @NotNull
     private String name;
+
+    @NotNull
     private String description;
+
+    @NotNull
     private BigDecimal price;
+
+    @NotNull
     private Double discount;
+
     private String image;
 
     @ManyToOne

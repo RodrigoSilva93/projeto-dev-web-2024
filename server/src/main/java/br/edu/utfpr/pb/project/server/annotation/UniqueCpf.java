@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = CpfValidator.class)
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Cpf {
+public @interface UniqueCpf {
 
     String message() default "Cpf must be 14 characters";
 
