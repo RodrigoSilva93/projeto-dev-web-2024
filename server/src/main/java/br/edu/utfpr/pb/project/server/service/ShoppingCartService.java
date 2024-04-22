@@ -42,32 +42,32 @@ public class ShoppingCartService implements ICrudService <ShoppingCart, Long> {
 
     @Override
     public List<ShoppingCart> findAll() {
-        return List.of();
+        return shoppingCartRepository.findAll();
     }
 
     @Override
     public List<ShoppingCart> findAll(Sort sort) {
-        return List.of();
+        return shoppingCartRepository.findAll(sort);
     }
 
     @Override
     public Page<ShoppingCart> findAll(Pageable pageable) {
-        return null;
+        return shoppingCartRepository.findAll(pageable);
     }
 
     @Override
     public ShoppingCart save(ShoppingCart entity) {
-        return null;
+        return shoppingCartRepository.save(entity);
     }
 
     @Override
     public ShoppingCart saveAndFlush(ShoppingCart entity) {
-        return null;
+        return shoppingCartRepository.saveAndFlush(entity);
     }
 
     @Override
     public Iterable<ShoppingCart> save(Iterable<ShoppingCart> iterable) {
-        return null;
+        return shoppingCartRepository.saveAll(iterable);
     }
 
     @Override
@@ -77,31 +77,31 @@ public class ShoppingCartService implements ICrudService <ShoppingCart, Long> {
 
     @Override
     public ShoppingCart findOne(Long aLong) {
-        return null;
+        return shoppingCartRepository.findById(aLong).orElse(null);
     }
 
     @Override
     public boolean exists(Long aLong) {
-        return false;
+        return shoppingCartRepository.findById(aLong).isPresent();
     }
 
     @Override
     public long count() {
-        return 0;
+        return shoppingCartRepository.count();
     }
 
     @Override
     public void delete(Long aLong) {
-
+        shoppingCartRepository.deleteById(aLong);
     }
 
     @Override
     public void delete(Iterable<? extends ShoppingCart> iterable) {
-
+        shoppingCartRepository.deleteAll(iterable);
     }
 
     @Override
     public void deleteAll() {
-
+        shoppingCartRepository.deleteAll();
     }
 }
