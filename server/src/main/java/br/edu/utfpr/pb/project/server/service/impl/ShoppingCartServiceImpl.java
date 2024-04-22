@@ -1,22 +1,24 @@
-package br.edu.utfpr.pb.project.server.service;
+package br.edu.utfpr.pb.project.server.service.impl;
 
 import br.edu.utfpr.pb.project.server.model.CartList;
 import br.edu.utfpr.pb.project.server.model.CartListId;
 import br.edu.utfpr.pb.project.server.model.Product;
 import br.edu.utfpr.pb.project.server.model.ShoppingCart;
 import br.edu.utfpr.pb.project.server.repository.ShoppingCartRepository;
+import br.edu.utfpr.pb.project.server.service.IShoppingCartService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ShoppingCartService implements ICrudService <ShoppingCart, Long> {
+public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long> implements IShoppingCartService {
 
     private final ShoppingCartRepository shoppingCartRepository;
-    public ShoppingCartService(ShoppingCartRepository shoppingCartRepository) {
+    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository) {
         this.shoppingCartRepository = shoppingCartRepository;
     }
 
@@ -38,6 +40,11 @@ public class ShoppingCartService implements ICrudService <ShoppingCart, Long> {
     public void closeShoppingCart(ShoppingCart shoppingCart) {
         shoppingCart.setStatus(false);
         shoppingCartRepository.save(shoppingCart);
+    }
+
+    @Override
+    protected JpaRepository<ShoppingCart, Long> getRepository() {
+        return shoppingCartRepository;
     }
 
     @Override

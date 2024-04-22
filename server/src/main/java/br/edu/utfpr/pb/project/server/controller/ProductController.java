@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("products")
 public class ProductController extends CrudController<Product, ProductDto, Long> {
 
     private final IProductService service;
