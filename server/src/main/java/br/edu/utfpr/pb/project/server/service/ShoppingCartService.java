@@ -72,7 +72,7 @@ public class ShoppingCartService implements ICrudService <ShoppingCart, Long> {
 
     @Override
     public void flush() {
-
+        shoppingCartRepository.flush();
     }
 
     @Override

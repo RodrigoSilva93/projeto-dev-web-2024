@@ -22,17 +22,17 @@ public class UserService implements ICrudService<User, Long> {
 
     @Override
     public List<User> findAll() {
-        return List.of();
+        return userRepository.findAll();
     }
 
     @Override
     public List<User> findAll(Sort sort) {
-        return List.of();
+        return userRepository.findAll(sort);
     }
 
     @Override
     public Page<User> findAll(Pageable pageable) {
-        return null;
+        return userRepository.findAll(pageable);
     }
 
     public User save(User user) {
@@ -42,47 +42,47 @@ public class UserService implements ICrudService<User, Long> {
 
     @Override
     public User saveAndFlush(User entity) {
-        return null;
+        return userRepository.saveAndFlush(entity);
     }
 
     @Override
     public Iterable<User> save(Iterable<User> iterable) {
-        return null;
+        return userRepository.saveAll(iterable);
     }
 
     @Override
     public void flush() {
-
+        userRepository.flush();
     }
 
     @Override
     public User findOne(Long aLong) {
-        return null;
+        return userRepository.findById(aLong).orElse(null);
     }
 
     @Override
     public boolean exists(Long aLong) {
-        return false;
+        return userRepository.findById(aLong).isPresent();
     }
 
     @Override
     public long count() {
-        return 0;
+        return userRepository.count();
     }
 
     @Override
     public void delete(Long aLong) {
-
+        userRepository.deleteById(aLong);
     }
 
     @Override
     public void delete(Iterable<? extends User> iterable) {
-
+        userRepository.deleteAll(iterable);
     }
 
     @Override
     public void deleteAll() {
-
+        userRepository.deleteAll();
     }
 
 }
