@@ -6,6 +6,8 @@ import br.edu.utfpr.pb.project.server.service.ICartListService;
 import br.edu.utfpr.pb.project.server.service.ICrudService;
 import org.modelmapper.ModelMapper;
 
+@RestController
+@RequestMapping("cart-list")
 public class CartListController extends CrudController<CartList, CartListDto, Long>{
     private final ICartListService service;
     private final ModelMapper modelMapper;
