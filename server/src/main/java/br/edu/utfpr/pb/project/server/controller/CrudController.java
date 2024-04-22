@@ -1,13 +1,14 @@
 package br.edu.utfpr.pb.project.server.controller;
 
 import br.edu.utfpr.pb.project.server.service.ICrudService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -61,6 +62,41 @@ public abstract class CrudController<T, D, ID extends Serializable>{
         );
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<D> findOne(@PathVariable ID id) {
+        T entity = getService().findOne(id);
+        if ( entity != null) {
+            return ResponseEntity.ok(convertToDto(entity));
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
 
+    @PostMapping
+    public ResponseEntity<D> create(@RequestBody @Valid D entity) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(convertToDto(getService().save(convertToEntity(entity))));
+    }
 
+    @PutMapping("{id}")
+    public ResponseEntity<D> update(@PathVariable ID id, @RequestBody @Valid D entity) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(convertToDto(getService().save(convertToEntity(entity))));
+    }
+
+    @GetMapping("exists/{id}")
+    public ResponseEntity<Boolean> exists(@PathVariable ID id) {
+        return ResponseEntity.ok(getService().exists(id));
+    }
+
+    @GetMapping("count")
+    public ResponseEntity<Long> count() {
+        return ResponseEntity.ok(getService().count());
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> delete(@PathVariable ID id) {
+        getService().delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
