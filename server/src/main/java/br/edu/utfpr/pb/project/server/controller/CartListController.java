@@ -9,7 +9,8 @@ import org.modelmapper.ModelMapper;
 @RestController
 @RequestMapping("cart-list")
 public class CartListController extends CrudController<CartList, CartListDto, Long>{
-    private final ICartListService service;
+    pr
+    ivate final ICartListService service;
     private final ModelMapper modelMapper;
 
     public CartListController(ICartListService service, ModelMapper modelMapper) {
