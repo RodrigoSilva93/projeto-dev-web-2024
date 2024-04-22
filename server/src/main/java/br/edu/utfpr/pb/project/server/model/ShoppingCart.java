@@ -3,6 +3,7 @@ package br.edu.utfpr.pb.project.server.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
 import java.util.List;
@@ -25,6 +26,7 @@ public class ShoppingCart {
     private Boolean status;
 
     @NotNull
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private Date dateTime;
 
     @ManyToOne
