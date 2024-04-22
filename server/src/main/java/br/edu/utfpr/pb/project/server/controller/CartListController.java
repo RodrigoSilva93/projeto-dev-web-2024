@@ -5,12 +5,13 @@ import br.edu.utfpr.pb.project.server.model.CartList;
 import br.edu.utfpr.pb.project.server.service.ICartListService;
 import br.edu.utfpr.pb.project.server.service.ICrudService;
 import org.modelmapper.ModelMapper;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("cart-list")
 public class CartListController extends CrudController<CartList, CartListDto, Long>{
-    pr
-    ivate final ICartListService service;
+    private final ICartListService service;
     private final ModelMapper modelMapper;
 
     public CartListController(ICartListService service, ModelMapper modelMapper) {
