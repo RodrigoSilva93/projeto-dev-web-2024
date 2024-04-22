@@ -1,9 +1,11 @@
 package br.edu.utfpr.pb.project.server.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_shopping_cart")
@@ -29,4 +31,8 @@ public class ShoppingCart {
     @JoinColumn(name = "user_id")
     private User user;
 
+    //TODO retornar a lista de carrinhos
+    public <E> List<E> getCartLists() {
+        return null;
+    }
 }

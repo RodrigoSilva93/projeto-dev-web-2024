@@ -3,7 +3,6 @@ package br.edu.utfpr.pb.project.server.service;
 import br.edu.utfpr.pb.project.server.model.CartList;
 import br.edu.utfpr.pb.project.server.repository.CartListRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 
@@ -17,11 +16,10 @@ public class CartListService {
 
     public void updatePriceByQuantity(Long cartListId, BigDecimal price, Integer quantity) {
 
-        CartList cartList = cartListRepository.findById(cartListId);
+        CartList cartList = cartListRepository.findById(cartListId).orElse(null);
 
-        BigDecimal newPrice = price * quantity;
+        BigDecimal newPrice = price.multiply(BigDecimal.valueOf(quantity));
         cartList.setPrice(newPrice);
         cartListRepository.save(cartList);
-        }
     }
 }

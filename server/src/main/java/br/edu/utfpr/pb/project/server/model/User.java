@@ -1,6 +1,7 @@
 package br.edu.utfpr.pb.project.server.model;
 
 import br.edu.utfpr.pb.project.server.annotation.UniqueCpf;
+import br.edu.utfpr.pb.project.server.annotation.UniqueEmail;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
