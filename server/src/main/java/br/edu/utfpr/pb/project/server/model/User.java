@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,7 +41,7 @@ public class User implements UserDetails {
     private String password;
 
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.birthDate.NotNull}")
-    @Pattern(regexp = "\\d+", message = "{br.edu.utfpr.pb.project.server.user.birthDate.Pattern}")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date birthDate;
 
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.gender.NotNull}")
