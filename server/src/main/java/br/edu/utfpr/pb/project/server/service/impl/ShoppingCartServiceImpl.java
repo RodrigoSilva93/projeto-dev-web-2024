@@ -1,8 +1,5 @@
 package br.edu.utfpr.pb.project.server.service.impl;
 
-import br.edu.utfpr.pb.project.server.model.CartList;
-import br.edu.utfpr.pb.project.server.model.CartListId;
-import br.edu.utfpr.pb.project.server.model.Product;
 import br.edu.utfpr.pb.project.server.model.ShoppingCart;
 import br.edu.utfpr.pb.project.server.repository.ShoppingCartRepository;
 import br.edu.utfpr.pb.project.server.service.IShoppingCartService;
@@ -20,21 +17,6 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
     private final ShoppingCartRepository shoppingCartRepository;
     public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository) {
         this.shoppingCartRepository = shoppingCartRepository;
-    }
-
-    public void addProductToCart(ShoppingCart shoppingCart, Product product, Integer quantity) {
-        CartListId cartListId = new CartListId(product.getId(), shoppingCart.getId());
-        CartList cartListItem = new CartList(cartListId, product.getPrice(), quantity);
-
-        shoppingCart.getCartLists().add(cartListItem);
-
-        shoppingCartRepository.save(shoppingCart);
-    }
-
-    public void removeProductFromCart(ShoppingCart shoppingCart, Long productId) {
-        List<CartList> cartLists = shoppingCart.getCartLists();
-        cartLists.removeIf(cartList -> cartList.getId().getIdProduct().equals(productId));
-        shoppingCartRepository.save(shoppingCart);
     }
 
     public void closeShoppingCart(ShoppingCart shoppingCart) {
