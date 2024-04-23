@@ -1,28 +1,39 @@
 package br.edu.utfpr.pb.project.server.service.impl;
 
 import br.edu.utfpr.pb.project.server.model.CartList;
+import br.edu.utfpr.pb.project.server.model.Product;
 import br.edu.utfpr.pb.project.server.repository.CartListRepository;
+import br.edu.utfpr.pb.project.server.repository.ProductRepository;
 import br.edu.utfpr.pb.project.server.service.ICartListService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 public class CartListServiceImpl extends CrudServiceImpl<CartList, Long> implements ICartListService {
 
     private final CartListRepository cartListRepository;
-    public CartListServiceImpl(CartListRepository cartListRepository) {
+    private final ProductRepository productRepository;
+
+    public CartListServiceImpl(CartListRepository cartListRepository, ProductRepository productRepository) {
         this.cartListRepository = cartListRepository;
+        this.productRepository = productRepository;
     }
 
-    public void updatePriceByQuantity(Long cartListId, BigDecimal price, Integer quantity) {
+    public BigDecimal updatePriceByQuantity(BigDecimal price, Integer quantity) {
+        return price.multiply(BigDecimal.valueOf(quantity));
+    }
 
-        CartList cartList = cartListRepository.findById(cartListId).orElse(null);
+    @Override
+    public CartList save(CartList cartList) {
+        CartList savedCartList = cartListRepository.save(cartList);
+        Optional<Product> product = productRepository.findById(cartList.getId().getIdProduct());
 
-        BigDecimal newPrice = price.multiply(BigDecimal.valueOf(quantity));
-        cartList.setPrice(newPrice);
-        cartListRepository.save(cartList);
+        product.ifPresent(value -> savedCartList.setPrice(updatePriceByQuantity(value.getPrice(), cartList.getQuantity())));
+
+        return cartListRepository.save(savedCartList);
     }
 
     @Override
