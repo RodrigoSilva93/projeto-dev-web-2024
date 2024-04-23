@@ -22,16 +22,19 @@ public class CartListServiceImpl extends CrudServiceImpl<CartList, Long> impleme
         this.productRepository = productRepository;
     }
 
-    public BigDecimal updatePriceByQuantity(BigDecimal price, Integer quantity) {
-        return price.multiply(BigDecimal.valueOf(quantity));
+    public BigDecimal updatePriceByQuantity(BigDecimal price, Integer quantity, Double discount) {
+        return (price.multiply(BigDecimal.valueOf(quantity))).multiply(BigDecimal.valueOf(1 - discount));
     }
 
     @Override
     public CartList save(CartList cartList) {
-        CartList savedCartList = cartListRepository.save(cartList);
-        Optional<Product> product = productRepository.findById(cartList.getId().getIdProduct());
 
-        product.ifPresent(value -> savedCartList.setPrice(updatePriceByQuantity(value.getPrice(), cartList.getQuantity())));
+        CartList savedCartList = cartListRepository.save(cartList);
+
+        Optional<Product> product = productRepository.findById(savedCartList.getId().getIdProduct());
+        product.ifPresent(value -> savedCartList.setPrice(
+                updatePriceByQuantity(value.getPrice(), savedCartList.getQuantity(), value.getDiscount())
+        ));
 
         return cartListRepository.save(savedCartList);
     }
