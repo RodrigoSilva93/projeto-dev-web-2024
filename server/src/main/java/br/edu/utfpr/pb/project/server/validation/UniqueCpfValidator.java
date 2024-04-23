@@ -13,9 +13,6 @@ public class UniqueCpfValidator implements ConstraintValidator<UniqueCpf, String
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        if (userRepository.findByCpf(s) == null) {
-            return true;
-        }
-        return false;
+        return userRepository.findByCpf(s) == null;
     }
 }

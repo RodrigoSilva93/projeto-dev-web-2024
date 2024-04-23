@@ -1,6 +1,8 @@
 package br.edu.utfpr.pb.project.server.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -30,6 +32,8 @@ public class Product {
     private BigDecimal price;
 
     @NotNull
+    @DecimalMin(value = "0.0")
+    @DecimalMax(value = "1.0")
     private Double discount;
 
     private String image;

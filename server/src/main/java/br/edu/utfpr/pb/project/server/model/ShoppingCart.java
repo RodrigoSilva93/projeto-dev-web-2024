@@ -6,7 +6,6 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "tb_shopping_cart")
@@ -32,9 +31,4 @@ public class ShoppingCart {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    //TODO retornar a lista de carrinhos
-    public <E> List<E> getCartLists() {
-        return null;
-    }
 }
