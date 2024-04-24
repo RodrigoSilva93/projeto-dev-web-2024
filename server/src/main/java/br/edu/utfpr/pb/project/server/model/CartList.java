@@ -4,6 +4,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class CartList {
     private BigDecimal price;
 
     @NotNull
+    @Positive(message = "{br.edu.utfpr.pb.project.server.cartlist.quantity.Positive}")
     private Integer quantity;
 
 }
