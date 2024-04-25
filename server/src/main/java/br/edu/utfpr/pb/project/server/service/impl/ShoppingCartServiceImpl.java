@@ -20,7 +20,7 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
     }
 
     public void closeShoppingCart(ShoppingCart shoppingCart) {
-        shoppingCart.setStatus(false);
+        shoppingCart.setStatus(true);
         shoppingCartRepository.save(shoppingCart);
     }
 
@@ -46,7 +46,17 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
 
     @Override
     public ShoppingCart save(ShoppingCart entity) {
-        return shoppingCartRepository.save(entity);
+
+        List<ShoppingCart> openCart = shoppingCartRepository.findByUserAndStatus(entity.getUser(), false);
+        if (!openCart.isEmpty() && (!entity.getStatus())) {
+            return openCart.getFirst();
+
+        } else if (!openCart.isEmpty() )  {
+            openCart.getFirst().setStatus(true);
+            return shoppingCartRepository.save(openCart.getFirst());
+        } else {
+            return shoppingCartRepository.save(entity);
+        }
     }
 
     @Override
