@@ -1,8 +1,8 @@
--- insert into tb_category (name) values ('Informática');
--- insert into tb_category (name) values ('UD');
--- insert into tb_category (name) values ('Cozinha');
--- insert into tb_category (name) values ('Móveis');
--- insert into tb_category (name) values ('Eletrônico');
+insert into tb_category (name, type) values ('Partes Externas', 'OUTSIDE_VEHICLE');
+insert into tb_category (name, type) values ('Partes Internas', 'INSIDE_VEHICLE');
+insert into tb_category (name, type) values ('Diversas', 'MISCELLANEOUS');
+insert into tb_category (name, type) values ('Partes Mecanicas', 'MECHANICAL_PARTS');
+insert into tb_category (name, type) values ('Tunagem', 'TUNING_PARTS');
 
 -- insert into tb_product (name, description, price, category_id) values ('Refrigerador 429L','Refrigerador 429L Branco, duplex....',1990.0,2);
 -- insert into tb_product (name, description, price, category_id) values ('Notebook Arus 15.6','Notebook Arus 15.6 Core I7, 16Gb Ram...',2449.0,1);
