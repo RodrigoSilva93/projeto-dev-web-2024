@@ -61,35 +61,6 @@ public class User implements UserDetails {
     @NotEmpty
     private String phone;
 
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.cep.NotNull}")
-    @NotEmpty
-    private String cep;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.country.NotNull}")
-    @NotEmpty
-    private String country;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.state.NotNull}")
-    @NotEmpty
-    private String state;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.city.NotNull}")
-    @NotEmpty
-    private String city;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.district.NotNull}")
-    @NotEmpty
-    private String district;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.street.NotNull}")
-    @NotEmpty
-    private String street;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.number.NotNull}")
-    private Integer number;
-
-    private String reference;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return AuthorityUtils.createAuthorityList("ROLE_USER");

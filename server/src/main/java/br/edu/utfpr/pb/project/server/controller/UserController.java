@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("users")
-@Validated
+
 public class UserController {
 
     private final UserService userService;
