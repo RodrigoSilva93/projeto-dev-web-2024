@@ -58,6 +58,8 @@ public class WebSecurity {
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/cart-list/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "shopping-cart/**").permitAll()
                 .anyRequest().authenticated()
         );
 
