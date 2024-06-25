@@ -3,6 +3,7 @@ package br.edu.utfpr.pb.project.server.model;
 import br.edu.utfpr.pb.project.server.annotation.UniqueCpf;
 import br.edu.utfpr.pb.project.server.annotation.UniqueEmail;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -29,10 +30,12 @@ public class User implements UserDetails {
     private Long id;
 
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.name.NotNull}")
+    @NotEmpty
     private String name;
 
     @UniqueEmail
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.email.NotNull}")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     private String email;
 
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.password.NotNull}")
@@ -45,38 +48,18 @@ public class User implements UserDetails {
     private Date birthDate;
 
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.gender.NotNull}")
+    @NotEmpty
     private String gender;
 
     @UniqueCpf
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.password.NotNull}")
     @Size(max = 14)
+    @NotEmpty
     private String cpf;
 
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.phone.NotNull}")
+    @NotEmpty
     private String phone;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.cep.NotNull}")
-    private String cep;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.country.NotNull}")
-    private String country;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.state.NotNull}")
-    private String state;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.city.NotNull}")
-    private String city;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.district.NotNull}")
-    private String district;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.street.NotNull}")
-    private String street;
-
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.number.NotNull}")
-    private Integer number;
-
-    private String reference;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
