@@ -15,9 +15,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class CartListId implements Serializable {
-    @Column(name = "id_product")
-    private Long idProduct;
-
     @Column(name = "id_shopping_cart")
     private Long idShoppingCart;
 }

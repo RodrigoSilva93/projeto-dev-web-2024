@@ -1,12 +1,17 @@
 package br.edu.utfpr.pb.project.server.service.impl;
 
 import br.edu.utfpr.pb.project.server.model.ShoppingCart;
+import br.edu.utfpr.pb.project.server.model.User;
 import br.edu.utfpr.pb.project.server.repository.ShoppingCartRepository;
+import br.edu.utfpr.pb.project.server.service.AuthService;
 import br.edu.utfpr.pb.project.server.service.IShoppingCartService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +20,13 @@ import java.util.List;
 public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long> implements IShoppingCartService {
 
     private final ShoppingCartRepository shoppingCartRepository;
-    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository) {
+    private final AuthService authService;
+    private final HttpServletRequest request;
+
+    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, AuthService authService, HttpServletRequest request) {
         this.shoppingCartRepository = shoppingCartRepository;
+        this.authService = authService;
+        this.request = request;
     }
 
     public void closeShoppingCart(ShoppingCart shoppingCart) {
@@ -46,6 +56,11 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
 
     @Override
     public ShoppingCart save(ShoppingCart entity) {
+        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        String email = (String) authentication.getPrincipal();
+        User user = (User) authService.loadUserByUsername(email);
+
+        entity.setUser(user);
 
         List<ShoppingCart> openCart = shoppingCartRepository.findByUserAndStatus(entity.getUser(), false);
         if (!openCart.isEmpty() && (!entity.getStatus())) {

@@ -3,6 +3,7 @@ package br.edu.utfpr.pb.project.server.dto;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class CartListDto {
@@ -10,5 +11,5 @@ public class CartListDto {
 
     private BigDecimal price;
 
-    private Integer quantity;
+    private List<ProductDto> products;
 }

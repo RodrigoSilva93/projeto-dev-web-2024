@@ -2,15 +2,15 @@ package br.edu.utfpr.pb.project.server.model;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,8 +25,7 @@ public class CartList {
 
     private BigDecimal price;
 
-    @NotNull
-    @Positive(message = "{br.edu.utfpr.pb.project.server.cartlist.quantity.Positive}")
-    private Integer quantity;
+    @OneToMany
+    private List<Product> products;
 
 }

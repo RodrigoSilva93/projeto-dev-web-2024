@@ -4,7 +4,5 @@ import lombok.Data;
 
 @Data
 public class CartListIdDto {
-    private int idProduct;
-
     private int idShoppingCart;
 }

@@ -1,5 +1,6 @@
 package br.edu.utfpr.pb.project.server.model;
 
+import br.edu.utfpr.pb.project.server.enums.PaymentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -31,4 +32,7 @@ public class ShoppingCart {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentType payment;
 }
