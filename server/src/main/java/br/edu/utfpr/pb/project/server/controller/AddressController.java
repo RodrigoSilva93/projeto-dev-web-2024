@@ -24,7 +24,7 @@ public class AddressController extends CrudController<Address, AddressDto, Long>
 
     @Override
     protected ICrudService<Address, Long> getService() {
-        return null;
+        return addressService;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class AddressController extends CrudController<Address, AddressDto, Long>
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("{cep}")
+    @GetMapping("cep/{cep}")
     public String searchByCep(@PathVariable String cep) {
         return addressService.searchByCep(cep);
     }
