@@ -1,8 +1,5 @@
 package br.edu.utfpr.pb.project.server.dto;
 
-import br.edu.utfpr.pb.project.server.model.User;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -30,8 +27,4 @@ public class AddressDto {
 
     @NotNull
     private String state;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 }

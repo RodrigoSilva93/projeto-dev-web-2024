@@ -42,4 +42,9 @@ public class AddressController extends CrudController<Address, AddressDto, Long>
         addressService.removeAddressFromAuthenticatedUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("{cep}")
+    public String searchByCep(@PathVariable String cep) {
+        return addressService.searchByCep(cep);
+    }
 }
