@@ -1,0 +1,50 @@
+package br.edu.utfpr.pb.project.server.controller;
+
+import br.edu.utfpr.pb.project.server.dto.AddressDto;
+import br.edu.utfpr.pb.project.server.model.Address;
+import br.edu.utfpr.pb.project.server.service.IAddressService;
+import br.edu.utfpr.pb.project.server.service.ICrudService;
+import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/address")
+public class AddressController extends CrudController<Address, AddressDto, Long>{
+    private final ModelMapper modelMapper;
+    private final IAddressService addressService;
+
+
+    public AddressController(ModelMapper modelMapper, IAddressService addressService) {
+        super(Address.class, AddressDto.class);
+        this.modelMapper = modelMapper;
+        this.addressService = addressService;
+    }
+
+    @Override
+    protected ICrudService<Address, Long> getService() {
+        return null;
+    }
+
+    @Override
+    protected ModelMapper getModelMapper() {
+        return modelMapper;
+    }
+
+    @PostMapping
+    public Address create(@RequestBody @Valid Address address) {
+        return addressService.addAddressToAuthenticatedUser(address);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        addressService.removeAddressFromAuthenticatedUser(id);
+        return ResponseEntity.noContent().build();
+    }
+    
+    @GetMapping("{cep}")
+    public String searchByCep(@PathVariable String cep) {
+        return addressService.searchByCep(cep);
+    }
+}

@@ -67,7 +67,7 @@ public class User implements UserDetails {
     private List<Address> addresses;
 
     public void addAddress(Address address) {
-        address.setUser(this);
+        address.setUser(this); 
         this.addresses.add(address);
     }
 

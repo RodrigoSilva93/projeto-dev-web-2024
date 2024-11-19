@@ -29,6 +29,4 @@ public class UserDto {
 
     @NotNull
     private String phone;
-
-    private List<AddressDto> addresses;
 }

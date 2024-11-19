@@ -25,11 +25,9 @@ public class ExceptionHandlerAdvice {
             validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
 
-        return ApiError.builder()
-                .status(400)
-                .message("Validation error")
-                .url(request.getServletPath())
-                .validationErrors(validationErrors)
-                .build();
+        return new ApiError(HttpStatus.BAD_REQUEST.value(),
+                "Validation error",
+                request.getServletPath(),
+                validationErrors);
     }
 }
