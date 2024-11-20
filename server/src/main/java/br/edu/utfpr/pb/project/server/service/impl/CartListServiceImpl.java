@@ -20,8 +20,8 @@ public class CartListServiceImpl extends CrudServiceImpl<CartList, Long> impleme
         this.productRepository = productRepository;
     }
 
-    public BigDecimal updatePriceByQuantity(BigDecimal price, Integer quantity, Double discount) {
-        return (price.multiply(BigDecimal.valueOf(quantity))).multiply(BigDecimal.valueOf(1 - discount));
+    public BigDecimal updatePriceByQuantity(BigDecimal price, Double discount) {
+        return (price.multiply(BigDecimal.valueOf(1 - discount)))  ;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class CartListServiceImpl extends CrudServiceImpl<CartList, Long> impleme
 
         savedCartList.getProducts().forEach(product ->
                 savedCartList.setPrice(
-                        updatePriceByQuantity(product.getPrice(), product.getQuantity(), product.getDiscount())
+                        savedCartList.getPrice().add(updatePriceByQuantity(product.getPrice(), product.getDiscount()))
                 )
         );
 
