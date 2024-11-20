@@ -38,14 +38,6 @@ public class ShoppingCart {
 
     //faltou recuperar o cart-list sem precisar separar as requisições
     /*exemplo
-    {
-        "status": false,
-        "dateTime": "2024-11-20T19:00:00",
-        "payment": "APPROVED",
-        "cartlist": {
-            ...
-        }
-    }
-
+    
     * */
 }

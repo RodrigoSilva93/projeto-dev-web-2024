@@ -32,18 +32,19 @@ public class AddressController extends CrudController<Address, AddressDto, Long>
         return modelMapper;
     }
 
-    @PostMapping
+    @PostMapping("/auth")
     public Address create(@RequestBody @Valid Address address) {
         return addressService.addAddressToAuthenticatedUser(address);
     }
 
     @DeleteMapping("{id}")
+    @Override
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         addressService.removeAddressFromAuthenticatedUser(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("{cep}")
+    @GetMapping("/cep/{cep}")
     public String searchByCep(@PathVariable String cep) {
         return addressService.searchByCep(cep);
     }
