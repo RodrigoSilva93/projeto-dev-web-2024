@@ -9,6 +9,5 @@ public class CategoryDto {
     private int id;
 
     private String name;
-
     private CategoryType type;
 }

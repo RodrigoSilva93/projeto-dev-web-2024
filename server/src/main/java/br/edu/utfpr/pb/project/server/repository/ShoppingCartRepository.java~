@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
-    List<ShoppingCart> findByUserAndPayment(User user, PaymentStatus payment);
+    List<ShoppingCart> findByUserAndPaymentStatus(User user, PaymentStatus paymentStatus);
 }

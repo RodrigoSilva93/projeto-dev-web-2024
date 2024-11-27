@@ -62,12 +62,10 @@ public class User implements UserDetails {
     @NotEmpty
     private String phone;
 
-    @NotNull
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Address> addresses;
 
     public void addAddress(Address address) {
-        address.setUser(this);
         this.addresses.add(address);
     }
 

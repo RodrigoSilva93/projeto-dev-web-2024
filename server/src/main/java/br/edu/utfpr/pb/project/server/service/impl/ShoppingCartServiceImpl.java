@@ -1,14 +1,11 @@
 package br.edu.utfpr.pb.project.server.service.impl;
 
+import br.edu.utfpr.pb.project.server.enums.PaymentStatus;
 import br.edu.utfpr.pb.project.server.model.ShoppingCart;
 import br.edu.utfpr.pb.project.server.model.User;
 import br.edu.utfpr.pb.project.server.repository.ShoppingCartRepository;
 import br.edu.utfpr.pb.project.server.service.AuthService;
 import br.edu.utfpr.pb.project.server.service.IShoppingCartService;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,37 +18,20 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
 
     private final ShoppingCartRepository shoppingCartRepository;
     private final AuthService authService;
-    private final HttpServletRequest request;
 
-    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, AuthService authService, HttpServletRequest request) {
+    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, AuthService authService) {
         this.shoppingCartRepository = shoppingCartRepository;
         this.authService = authService;
-        this.request = request;
     }
 
     public void closeShoppingCart(ShoppingCart shoppingCart) {
-        shoppingCart.setStatus(true);
+        shoppingCart.setPayment(PaymentStatus.APPROVED);
         shoppingCartRepository.save(shoppingCart);
     }
 
     @Override
     protected JpaRepository<ShoppingCart, Long> getRepository() {
         return shoppingCartRepository;
-    }
-
-    @Override
-    public List<ShoppingCart> findAll() {
-        return shoppingCartRepository.findAll();
-    }
-
-    @Override
-    public List<ShoppingCart> findAll(Sort sort) {
-        return shoppingCartRepository.findAll(sort);
-    }
-
-    @Override
-    public Page<ShoppingCart> findAll(Pageable pageable) {
-        return shoppingCartRepository.findAll(pageable);
     }
 
     @Override
@@ -62,60 +42,15 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
 
         entity.setUser(user);
 
-        List<ShoppingCart> openCart = shoppingCartRepository.findByUserAndStatus(entity.getUser(), false);
-        if (!openCart.isEmpty() && (!entity.getStatus())) {
+        List<ShoppingCart> openCart = shoppingCartRepository.findByUserAndPayment(entity.getUser(), PaymentStatus.PENDING);
+        if (!openCart.isEmpty() && (!entity.getPayment().equals(PaymentStatus.PENDING))) {
             return openCart.getFirst();
 
         } else if (!openCart.isEmpty() )  {
-            openCart.getFirst().setStatus(true);
+            openCart.getFirst().setPayment(PaymentStatus.APPROVED);
             return shoppingCartRepository.save(openCart.getFirst());
         } else {
             return shoppingCartRepository.save(entity);
         }
-    }
-
-    @Override
-    public ShoppingCart saveAndFlush(ShoppingCart entity) {
-        return shoppingCartRepository.saveAndFlush(entity);
-    }
-
-    @Override
-    public Iterable<ShoppingCart> save(Iterable<ShoppingCart> iterable) {
-        return shoppingCartRepository.saveAll(iterable);
-    }
-
-    @Override
-    public void flush() {
-        shoppingCartRepository.flush();
-    }
-
-    @Override
-    public ShoppingCart findOne(Long aLong) {
-        return shoppingCartRepository.findById(aLong).orElse(null);
-    }
-
-    @Override
-    public boolean exists(Long aLong) {
-        return shoppingCartRepository.findById(aLong).isPresent();
-    }
-
-    @Override
-    public long count() {
-        return shoppingCartRepository.count();
-    }
-
-    @Override
-    public void delete(Long aLong) {
-        shoppingCartRepository.deleteById(aLong);
-    }
-
-    @Override
-    public void delete(Iterable<? extends ShoppingCart> iterable) {
-        shoppingCartRepository.deleteAll(iterable);
-    }
-
-    @Override
-    public void deleteAll() {
-        shoppingCartRepository.deleteAll();
     }
 }

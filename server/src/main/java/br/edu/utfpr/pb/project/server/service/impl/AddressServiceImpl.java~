@@ -40,7 +40,7 @@ public class AddressServiceImpl extends CrudServiceImpl<Address, Long> implement
             address.setUser(user);
             user.getAddresses().add(address);
             userRepository.save(user);
-            return user.getAddresses().getLast();
+            return address;
         }
         throw new RuntimeException("User not authenticated.");
     }

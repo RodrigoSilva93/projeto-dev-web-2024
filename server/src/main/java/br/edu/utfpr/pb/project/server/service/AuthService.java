@@ -2,7 +2,6 @@ package br.edu.utfpr.pb.project.server.service;
 
 import br.edu.utfpr.pb.project.server.model.User;
 import br.edu.utfpr.pb.project.server.repository.UserRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,14 +23,5 @@ public class AuthService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         return user;
-    }
-
-    public User getAuthenticatedUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            String email = ((UserDetails) principal).getUsername();
-            return (User) loadUserByUsername(email);
-        }
-        return null;
     }
 }

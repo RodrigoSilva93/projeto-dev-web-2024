@@ -58,9 +58,9 @@ public class WebSecurity {
         // http.cors(AbstractHttpConfigurer::disable);
         http.cors(cors -> corsConfigurationSource());
 
-        //TODO verificar estes requests
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/address/cep/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/error/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()

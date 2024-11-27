@@ -6,6 +6,7 @@ import br.edu.utfpr.pb.project.server.service.IAddressService;
 import br.edu.utfpr.pb.project.server.service.ICrudService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +34,10 @@ public class AddressController extends CrudController<Address, AddressDto, Long>
     }
 
     @PostMapping("/auth")
-    public Address create(@RequestBody @Valid Address address) {
-        return addressService.addAddressToAuthenticatedUser(address);
+    public ResponseEntity<Address> create(@RequestBody @Valid Address address) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(addressService.addAddressToAuthenticatedUser(address));
     }
 
     @DeleteMapping("{id}")
