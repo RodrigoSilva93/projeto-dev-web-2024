@@ -1,11 +1,14 @@
 package br.edu.utfpr.pb.project.server.model;
 
+import br.edu.utfpr.pb.project.server.enums.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,18 +26,27 @@ public class ShoppingCart {
     private Long id;
 
     @NotNull
-    private Boolean status;
-
-    @NotNull
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private Date dateTime;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
-    //TODO retornar a lista de carrinhos
-    public <E> List<E> getCartLists() {
-        return null;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus payment;
+
+    @NotNull
+    private Double totalPurchase;
+
+    @ManyToMany
+    @JoinTable(name = "shopping_cart_products", joinColumns = @JoinColumn(name = "shopping_cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Product> products = new ArrayList<>();
+
+    public void addProducts(List<Product> productsToAdd) {
+        products.addAll(productsToAdd);
     }
 }

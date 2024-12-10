@@ -1,17 +1,13 @@
 package br.edu.utfpr.pb.project.server.error;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.Map;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Builder
-@JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ApiError {
     private long timestamp = new Date().getTime();
     private int status;
@@ -19,4 +15,16 @@ public class ApiError {
     private String message;
     private Map<String, String> validationErrors;
 
+    public ApiError(final int status, final String message, final String url, final Map<String, String> validationErrors) {
+        this.status = status;
+        this.message = message;
+        this.url = url;
+        this.validationErrors = validationErrors;
+    }
+
+    public ApiError(final int status, final String message, final String url) {
+        this.status = status;
+        this.message = message;
+        this.url = url;
+    }
 }
