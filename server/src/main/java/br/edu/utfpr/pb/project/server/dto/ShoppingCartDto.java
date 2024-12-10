@@ -13,5 +13,6 @@ public class ShoppingCartDto {
     private Date dateTime;
     private UserDto user;
     private PaymentStatus payment;
+    private Double totalPurchase;
     private List<ProductDto> products;
 }

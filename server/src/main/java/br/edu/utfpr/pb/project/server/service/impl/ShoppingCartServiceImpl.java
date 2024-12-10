@@ -34,6 +34,26 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
         return shoppingCartRepository;
     }
 
+//    @Override
+//    public ShoppingCart save(ShoppingCart entity) {
+//        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+//        String email = (String) authentication.getPrincipal();
+//        User user = (User) authService.loadUserByUsername(email);
+//
+//        entity.setUser(user);
+//
+//        List<ShoppingCart> openCart = shoppingCartRepository.findByUserAndPayment(entity.getUser(), PaymentStatus.PENDING);
+//        if (!openCart.isEmpty() && (!entity.getPayment().equals(PaymentStatus.PENDING))) {
+//            return openCart.getFirst();
+//
+//        } else if (!openCart.isEmpty() )  {
+//            openCart.getFirst().setPayment(PaymentStatus.APPROVED);
+//            return shoppingCartRepository.save(openCart.getFirst());
+//        } else {
+//            return shoppingCartRepository.save(entity);
+//        }
+//    }
+
     @Override
     public ShoppingCart save(ShoppingCart entity) {
         UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
@@ -42,15 +62,18 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
 
         entity.setUser(user);
 
-        List<ShoppingCart> openCart = shoppingCartRepository.findByUserAndPayment(entity.getUser(), PaymentStatus.PENDING);
-        if (!openCart.isEmpty() && (!entity.getPayment().equals(PaymentStatus.PENDING))) {
-            return openCart.getFirst();
+        // Verficamos os carrinhos existentes. A primeira regra é enviar a compra como "PENDING" no banco, antes
+        // de finalizar a compra. Quando o usuário confirmar a compra o status muda de "PENDING" para "APPROVED".
+        // Não é possível ter duas compras com status "PENDING" ao mesmo tempo.
+        List<ShoppingCart> openCarts = shoppingCartRepository.findByUserAndPayment(user, PaymentStatus.PENDING);
+        ShoppingCart latestPendingCart = openCarts.isEmpty() ? null : openCarts.getFirst();
 
-        } else if (!openCart.isEmpty() )  {
-            openCart.getFirst().setPayment(PaymentStatus.APPROVED);
-            return shoppingCartRepository.save(openCart.getFirst());
-        } else {
-            return shoppingCartRepository.save(entity);
+        if (latestPendingCart != null) {
+            if (entity.getPayment().equals(PaymentStatus.PENDING))
+                latestPendingCart.setProducts(entity.getProducts());
+            else latestPendingCart.setPayment(PaymentStatus.APPROVED);
+            return shoppingCartRepository.save(latestPendingCart);
         }
+        else return shoppingCartRepository.save(entity);
     }
 }

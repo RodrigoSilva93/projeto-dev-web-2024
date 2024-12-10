@@ -37,6 +37,9 @@ public class ShoppingCart {
     @Enumerated(EnumType.STRING)
     private PaymentStatus payment;
 
+    @NotNull
+    private Double totalPurchase;
+
     @ManyToMany
     @JoinTable(name = "shopping_cart_products", joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")

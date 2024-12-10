@@ -14,6 +14,5 @@ public class ProductDto {
     private BigDecimal price;
     private Double discount;
     private String image;
-    private Integer quantity;
     private CategoryDto category;
 }
