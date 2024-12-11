@@ -54,5 +54,6 @@ insert into tb_product (name, description, price, discount, image, category_id) 
 insert into tb_product (name, description, price, discount, image, category_id) values ('Produto 48', 'Descrição do produto 48', 360.0, 0.3, '', 3);
 insert into tb_product (name, description, price, discount, image, category_id) values ('Produto 49', 'Descrição do produto 49', 620.0, 0.4, '', 4);
 insert into tb_product (name, description, price, discount, image, category_id) values ('Produto 50', 'Descrição do produto 50', 1100.0, 0.5, '', 5);
+insert into tb_product (name, description, price, discount, image, category_id) values ('Produto 51', 'Descrição do produto 51', 1100.0, 0.5, '', 5);
 
 INSERT INTO tb_user (name, email, password, birth_date, gender, cpf, phone) VALUES ('Marcos Felipe Altenhofen', 'm.felipealt@gmail.com', '$2a$10$8hEEfl7XZD8GOA33OsZGy.Fpjo20ufQ5rhlcxZJDt1tjid2d4WQiy', '2003-09-18 21:00:00', 'male', '104.381.109-51', '46991077717');
