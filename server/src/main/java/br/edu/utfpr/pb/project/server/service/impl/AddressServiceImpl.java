@@ -56,10 +56,9 @@ public class AddressServiceImpl extends CrudServiceImpl<Address, Long> implement
                     .orElseThrow(() -> new RuntimeException("Address not found."));
             user.getAddresses().remove(address);
             addressRepository.delete(address);
-        } else
-            throw new RuntimeException("User not authenticated.");
+        }
+        else throw new RuntimeException("User not authenticated.");
     }
-
 
     public String searchByCep(String cep) {
         String uri = UriComponentsBuilder.fromHttpUrl("https://viacep.com.br/ws/" + cep + "/json/").toUriString();

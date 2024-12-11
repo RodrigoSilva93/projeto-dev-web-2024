@@ -47,8 +47,7 @@ public class ProductController extends CrudController<Product, ProductDto, Long>
                     .map(product -> modelMapper.map(product, ProductDto.class))
                     .collect(Collectors.toList());
             return ResponseEntity.ok(productDtos);
-        } else {
-            return ResponseEntity.notFound().build();
         }
+        else return ResponseEntity.notFound().build();
     }
 }

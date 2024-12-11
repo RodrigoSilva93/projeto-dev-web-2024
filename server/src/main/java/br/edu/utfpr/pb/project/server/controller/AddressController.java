@@ -16,7 +16,6 @@ public class AddressController extends CrudController<Address, AddressDto, Long>
     private final ModelMapper modelMapper;
     private final IAddressService addressService;
 
-
     public AddressController(ModelMapper modelMapper, IAddressService addressService) {
         super(Address.class, AddressDto.class);
         this.modelMapper = modelMapper;
