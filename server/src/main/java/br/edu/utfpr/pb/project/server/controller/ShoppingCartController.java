@@ -67,9 +67,10 @@ public class ShoppingCartController extends CrudController<ShoppingCart, Shoppin
             shoppingCartProduct.calculateFinalPrice();
 
             return shoppingCartProduct;
-        }).collect(Collectors.toList());
+        }).toList();
 
-        shoppingCart.setShoppingCartProducts(shoppingCartProducts);
+        finalShoppingCart.getShoppingCartProducts().clear();
+        finalShoppingCart.getShoppingCartProducts().addAll(shoppingCartProducts);
         shoppingCart.updateTotalPurchase();
 
         shoppingCart = shoppingCartRepository.save(shoppingCart);
