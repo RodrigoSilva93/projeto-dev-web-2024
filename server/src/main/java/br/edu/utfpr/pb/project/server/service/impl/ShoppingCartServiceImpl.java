@@ -58,7 +58,6 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
 
         ShoppingCart savedCart = shoppingCartRepository.save(entity);
 
-        // 🔹 Atualizar a lista de ShoppingCartProduct
         List<ShoppingCartProduct> newShoppingCartProducts = new ArrayList<>();
         for (ShoppingCartProduct shoppingCartProduct : entity.getShoppingCartProducts()) {
             Product product = productRepository.findById(shoppingCartProduct.getProduct().getId())
@@ -71,16 +70,12 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
             newShoppingCartProducts.add(shoppingCartProduct);
         }
 
-        // 🔹 Passo 3: Remover produtos obsoletos sem resetar a lista
         savedCart.getShoppingCartProducts().removeIf(existingProduct ->
                 newShoppingCartProducts.stream().noneMatch(newProduct ->
                         newProduct.getProduct().getId().equals(existingProduct.getProduct().getId()))
         );
 
-        // 🔹 Passo 4: Adicionar novos produtos sem sobrescrever a referência da coleção
         savedCart.getShoppingCartProducts().addAll(newShoppingCartProducts);
-
-        // 🔹 Passo 5: Atualizar o total da compra
         savedCart.updateTotalPurchase();
 
         return shoppingCartRepository.save(savedCart);

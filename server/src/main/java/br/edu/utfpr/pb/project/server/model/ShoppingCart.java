@@ -40,10 +40,6 @@ public class ShoppingCart {
     @NotNull
     private Double totalPurchase;
 
-//    @ManyToMany
-//    @JoinTable(name = "shopping_cart_products", joinColumns = @JoinColumn(name = "shopping_cart_id"),
-//            inverseJoinColumns = @JoinColumn(name = "product_id")
-//    )
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShoppingCartProduct> shoppingCartProducts = new ArrayList<>();
 

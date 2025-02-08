@@ -27,7 +27,6 @@ public class ShoppingCartController extends CrudController<ShoppingCart, Shoppin
     private final ICrudService<Product, Long> productRepository;
     private final ICrudService<ShoppingCart, Long> shoppingCartRepository;
 
-
     public ShoppingCartController(IShoppingCartService service, ModelMapper modelMapper,
                                   ICrudService<Product, Long> productRepository, ICrudService<ShoppingCart, Long> shoppingCartRepository) {
         super(ShoppingCart.class, ShoppingCartDto.class);
