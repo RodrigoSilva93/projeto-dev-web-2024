@@ -14,5 +14,5 @@ public class ShoppingCartDto {
     private UserDto user;
     private PaymentStatus payment;
     private Double totalPurchase;
-    private List<ProductDto> products;
+    private List<ShoppingCartProductDto> products;
 }

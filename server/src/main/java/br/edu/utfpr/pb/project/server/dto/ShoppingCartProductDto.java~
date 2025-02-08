@@ -1,4 +1,0 @@
-package br.edu.utfpr.pb.project.server.dto;
-
-public class ShoppingCartProductDto {
-}

@@ -1,9 +1,11 @@
 package br.edu.utfpr.pb.project.server.service.impl;
 
 import br.edu.utfpr.pb.project.server.enums.PaymentStatus;
+import br.edu.utfpr.pb.project.server.model.Product;
 import br.edu.utfpr.pb.project.server.model.ShoppingCart;
 import br.edu.utfpr.pb.project.server.model.ShoppingCartProduct;
 import br.edu.utfpr.pb.project.server.model.User;
+import br.edu.utfpr.pb.project.server.repository.ProductRepository;
 import br.edu.utfpr.pb.project.server.repository.ShoppingCartRepository;
 import br.edu.utfpr.pb.project.server.service.AuthService;
 import br.edu.utfpr.pb.project.server.service.IShoppingCartService;
@@ -12,16 +14,19 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long> implements IShoppingCartService {
 
     private final ShoppingCartRepository shoppingCartRepository;
+    private final ProductRepository productRepository;
     private final AuthService authService;
 
-    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, AuthService authService) {
+    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, AuthService authService) {
         this.shoppingCartRepository = shoppingCartRepository;
+        this.productRepository = productRepository;
         this.authService = authService;
     }
 
@@ -51,8 +56,34 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
             return shoppingCartRepository.save(latestPendingCart);
         }
 
-        entity.getShoppingCartProducts().forEach(shoppingCartProduct -> shoppingCartProduct.setShoppingCart(entity));
-        return shoppingCartRepository.save(entity);
+        ShoppingCart savedCart = shoppingCartRepository.save(entity);
+
+        // 🔹 Atualizar a lista de ShoppingCartProduct
+        List<ShoppingCartProduct> newShoppingCartProducts = new ArrayList<>();
+        for (ShoppingCartProduct shoppingCartProduct : entity.getShoppingCartProducts()) {
+            Product product = productRepository.findById(shoppingCartProduct.getProduct().getId())
+                    .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+
+            shoppingCartProduct.setShoppingCart(savedCart);
+            shoppingCartProduct.setProduct(product);
+            shoppingCartProduct.calculateFinalPrice();
+
+            newShoppingCartProducts.add(shoppingCartProduct);
+        }
+
+        // 🔹 Passo 3: Remover produtos obsoletos sem resetar a lista
+        savedCart.getShoppingCartProducts().removeIf(existingProduct ->
+                newShoppingCartProducts.stream().noneMatch(newProduct ->
+                        newProduct.getProduct().getId().equals(existingProduct.getProduct().getId()))
+        );
+
+        // 🔹 Passo 4: Adicionar novos produtos sem sobrescrever a referência da coleção
+        savedCart.getShoppingCartProducts().addAll(newShoppingCartProducts);
+
+        // 🔹 Passo 5: Atualizar o total da compra
+        savedCart.updateTotalPurchase();
+
+        return shoppingCartRepository.save(savedCart);
     }
 
     private void updateShoppingCartProducts(ShoppingCart existingCart, List<ShoppingCartProduct> newShoppingCartProducts) {
