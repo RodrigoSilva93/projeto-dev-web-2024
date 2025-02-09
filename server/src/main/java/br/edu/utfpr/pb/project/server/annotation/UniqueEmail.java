@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Constraint(validatedBy = UniqueEmailValidator.class)
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueEmail {
 
@@ -19,4 +19,7 @@ public @interface UniqueEmail {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
+    long userId() default -1;
+
 }

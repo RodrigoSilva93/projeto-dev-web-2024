@@ -63,7 +63,7 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
         List<ShoppingCartProduct> newShoppingCartProducts = new ArrayList<>();
         for (ShoppingCartProduct shoppingCartProduct : entity.getShoppingCartProducts()) {
             Product product = productRepository.findById(shoppingCartProduct.getProduct().getId())
-                    .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+                    .orElseThrow(() -> new RuntimeException("Product not found."));
 
             shoppingCartProduct.setShoppingCart(savedCart);
             shoppingCartProduct.setProduct(product);
@@ -71,11 +71,6 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
 
             newShoppingCartProducts.add(shoppingCartProduct);
         }
-
-//        savedCart.getShoppingCartProducts().removeIf(existingProduct ->
-//                newShoppingCartProducts.stream().allMatch(newProduct ->
-//                        newProduct.getProduct().getId().equals(existingProduct.getProduct().getId()))
-//        );
 
         savedCart.getShoppingCartProducts().clear();
         savedCart.getShoppingCartProducts().addAll(newShoppingCartProducts);

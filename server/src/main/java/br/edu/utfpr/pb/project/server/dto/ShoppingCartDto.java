@@ -4,7 +4,6 @@ import br.edu.utfpr.pb.project.server.enums.PaymentStatus;
 import lombok.Data;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data

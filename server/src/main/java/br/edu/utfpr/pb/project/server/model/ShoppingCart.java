@@ -43,16 +43,6 @@ public class ShoppingCart {
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShoppingCartProduct> shoppingCartProducts = new ArrayList<>();
 
-    public void addProducts(Product product, Integer quantity) {
-        ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct();
-        shoppingCartProduct.setShoppingCart(this);
-        shoppingCartProduct.setProduct(product);
-        shoppingCartProduct.setQuantity(quantity);
-        shoppingCartProduct.calculateFinalPrice();
-        this.shoppingCartProducts.add(shoppingCartProduct);
-        //updateTotalPurchase();
-    }
-
     public void updateTotalPurchase() {
         this.totalPurchase = this.shoppingCartProducts.stream()
                 .mapToDouble(shoppingCartProduct -> shoppingCartProduct.getFinalPrice().doubleValue())

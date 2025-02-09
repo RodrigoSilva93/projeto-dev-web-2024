@@ -20,6 +20,4 @@ public @interface UniqueCpf {
 
     Class<? extends Payload>[] payload() default {};
 
-    long userId() default -1;
-
 }

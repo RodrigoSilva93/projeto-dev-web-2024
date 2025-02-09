@@ -85,4 +85,19 @@ public class UserService implements ICrudService<User, Long> {
         userRepository.deleteAll();
     }
 
+    public void update(Long id, User updateUser) {
+        User user = findOne(id);
+        if (updateUser.getName() != null) user.setName(updateUser.getName());
+        if (updateUser.getEmail() != null) user.setEmail(updateUser.getEmail());
+        if (updateUser.getPhone() != null) user.setPhone(updateUser.getPhone());
+        if (updateUser.getBirthDate() != null) user.setBirthDate(updateUser.getBirthDate());
+        if (updateUser.getGender() != null) user.setGender(updateUser.getGender());
+        if (updateUser.getCpf() != null) user.setCpf(updateUser.getCpf());
+        if (updateUser.getAddresses() != null) user.setAddresses(updateUser.getAddresses());
+        if (updateUser.getPassword() != null && !updateUser.getPassword().isEmpty())
+            user.setPassword(bCryptPasswordEncoder.encode(updateUser.getPassword()));
+
+        save(user);
+    }
+
 }

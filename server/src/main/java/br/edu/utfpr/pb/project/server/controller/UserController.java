@@ -61,6 +61,23 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found or invalid token");
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser) {
+
+        try {
+            User existingUser = userService.findOne(id);
+            if (existingUser == null)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+
+            updatedUser.setId(id);
+
+            userService.update(id, updatedUser);
+            return ResponseEntity.ok(GenericResponse.builder().message("User updated.").build());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     private UserDto convertToDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId().intValue());

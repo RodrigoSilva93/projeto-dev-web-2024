@@ -1,7 +1,5 @@
 package br.edu.utfpr.pb.project.server.dto;
 
-import br.edu.utfpr.pb.project.server.model.Product;
-import br.edu.utfpr.pb.project.server.model.ShoppingCart;
 import lombok.Data;
 
 import java.math.BigDecimal;
