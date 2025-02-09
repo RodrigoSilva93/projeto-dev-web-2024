@@ -36,7 +36,10 @@ public class Product {
     @DecimalMax(value = "1.0")
     private Double discount;
 
-    private String image;
+    @Column(name = "image_name")
+    private  String imageName;
+    @Column(name = "content_type")
+    private  String contentType;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
