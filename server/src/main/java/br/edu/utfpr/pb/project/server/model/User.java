@@ -2,6 +2,7 @@ package br.edu.utfpr.pb.project.server.model;
 
 import br.edu.utfpr.pb.project.server.annotation.UniqueCpf;
 import br.edu.utfpr.pb.project.server.annotation.UniqueEmail;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -63,6 +64,7 @@ public class User implements UserDetails {
     private String phone;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonIgnore
     private List<Address> addresses;
 
     public void addAddress(Address address) {

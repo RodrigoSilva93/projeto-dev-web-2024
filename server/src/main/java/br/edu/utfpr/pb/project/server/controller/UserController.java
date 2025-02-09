@@ -52,7 +52,6 @@ public class UserController {
 
         Object principal = authentication.getPrincipal();
 
-
             User user = userRepository.findByEmail((String) principal);
             if (user != null) {
                 UserDto userDto = convertToDto(user);

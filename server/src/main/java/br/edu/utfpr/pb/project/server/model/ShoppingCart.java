@@ -50,8 +50,7 @@ public class ShoppingCart {
         shoppingCartProduct.setQuantity(quantity);
         shoppingCartProduct.calculateFinalPrice();
         this.shoppingCartProducts.add(shoppingCartProduct);
-        updateTotalPurchase();
-
+        //updateTotalPurchase();
     }
 
     public void updateTotalPurchase() {

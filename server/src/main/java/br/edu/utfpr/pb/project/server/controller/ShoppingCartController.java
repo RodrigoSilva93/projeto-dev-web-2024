@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("shopping-cart")
@@ -56,7 +57,8 @@ public class ShoppingCartController extends CrudController<ShoppingCart, Shoppin
         shoppingCart = shoppingCartRepository.save(shoppingCart);
 
         ShoppingCart finalShoppingCart = shoppingCart;
-        List<ShoppingCartProduct> shoppingCartProducts = cartDto.getProducts().stream().map(dto -> {
+        List<ShoppingCartProduct> shoppingCartProducts = Optional.ofNullable(cartDto.getShoppingCartProducts())
+                .orElse(Collections.emptyList()).stream().map(dto -> {
             Product product = productRepository.findOne(dto.getProductId());
 
             ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct();

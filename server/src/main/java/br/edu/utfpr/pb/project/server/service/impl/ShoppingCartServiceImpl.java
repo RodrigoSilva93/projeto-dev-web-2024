@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long> implements IShoppingCartService {
@@ -70,11 +72,12 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
             newShoppingCartProducts.add(shoppingCartProduct);
         }
 
-        savedCart.getShoppingCartProducts().removeIf(existingProduct ->
-                newShoppingCartProducts.stream().noneMatch(newProduct ->
-                        newProduct.getProduct().getId().equals(existingProduct.getProduct().getId()))
-        );
+//        savedCart.getShoppingCartProducts().removeIf(existingProduct ->
+//                newShoppingCartProducts.stream().allMatch(newProduct ->
+//                        newProduct.getProduct().getId().equals(existingProduct.getProduct().getId()))
+//        );
 
+        savedCart.getShoppingCartProducts().clear();
         savedCart.getShoppingCartProducts().addAll(newShoppingCartProducts);
         savedCart.updateTotalPurchase();
 
@@ -82,10 +85,23 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
     }
 
     private void updateShoppingCartProducts(ShoppingCart existingCart, List<ShoppingCartProduct> newShoppingCartProducts) {
-        existingCart.getShoppingCartProducts().clear();
-        newShoppingCartProducts.forEach(shoppingCartProduct -> {
-            shoppingCartProduct.setShoppingCart(existingCart);
-            existingCart.getShoppingCartProducts().add(shoppingCartProduct);
+
+        Map<Long, ShoppingCartProduct> newProductsMap = newShoppingCartProducts.stream()
+                .collect(Collectors.toMap(scp -> scp.getProduct().getId(), scp -> scp));
+
+        existingCart.getShoppingCartProducts().removeIf(existingProduct ->
+                !newProductsMap.containsKey(existingProduct.getProduct().getId()));
+
+        newProductsMap.forEach((productId, newProduct) -> {
+            boolean alreadyExists = existingCart.getShoppingCartProducts().stream()
+                    .anyMatch(existingProduct -> existingProduct.getProduct().getId().equals(productId));
+
+            if (!alreadyExists) {
+                newProduct.setShoppingCart(existingCart);
+                existingCart.getShoppingCartProducts().add(newProduct);
+            }
         });
+
+        existingCart.updateTotalPurchase();
     }
 }
