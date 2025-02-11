@@ -35,9 +35,9 @@ public class User implements UserDetails {
     @NotEmpty
     private String name;
 
-    @UniqueEmail
+    @UniqueEmail(message = "{br.edu.utfpr.pb.project.server.user.email.UniqueEmail}")
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.email.NotNull}")
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "{br.edu.utfpr.pb.project.server.user.email.Pattern}")
     private String email;
 
     @NotNull(message = "{br.edu.utfpr.pb.project.server.user.password.NotNull}")
@@ -53,8 +53,8 @@ public class User implements UserDetails {
     @NotEmpty
     private String gender;
 
-    @UniqueCpf
-    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.password.NotNull}")
+    @UniqueCpf(message = "{br.edu.utfpr.pb.project.server.user.cpf.UniqueCpf}")
+    @NotNull(message = "{br.edu.utfpr.pb.project.server.user.cpf.NotNull}")
     @Size(max = 14)
     @NotEmpty
     private String cpf;
