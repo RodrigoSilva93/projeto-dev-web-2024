@@ -43,6 +43,12 @@ public class ShoppingCart {
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShoppingCartProduct> shoppingCartProducts = new ArrayList<>();
 
+    @ManyToOne
+    @NotNull
+    @JsonIgnore
+    @JoinColumn(name = "address_id")
+    private Address address;
+
     public void addProducts(Product product, Integer quantity) {
         ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct();
         shoppingCartProduct.setShoppingCart(this);
