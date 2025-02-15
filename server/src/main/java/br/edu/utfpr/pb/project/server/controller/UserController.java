@@ -7,7 +7,6 @@ import br.edu.utfpr.pb.project.server.repository.UserRepository;
 import br.edu.utfpr.pb.project.server.service.UserService;
 import br.edu.utfpr.pb.project.server.shared.GenericResponse;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,16 +21,13 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("users")
-
 public class UserController {
 
     private final UserService userService;
-    private final ModelMapper modelMapper;
 
     private final UserRepository userRepository;
 
-    public UserController(ModelMapper modelMapper, UserService userService, UserRepository userRepository) {
-            this.modelMapper = modelMapper;
+    public UserController(UserService userService, UserRepository userRepository) {
             this.userService = userService;
             this.userRepository = userRepository;
     }
@@ -47,18 +43,18 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado.");
         }
 
         Object principal = authentication.getPrincipal();
 
-            User user = userRepository.findByEmail((String) principal);
-            if (user != null) {
-                UserDto userDto = convertToDto(user);
-                return ResponseEntity.ok(userDto);
-            }
+        User user = userRepository.findByEmail((String) principal);
+        if (user != null) {
+            UserDto userDto = convertToDto(user);
+            return ResponseEntity.ok(userDto);
+        }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found or invalid token");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não encontrado ou token inválido");
     }
 
     private UserDto convertToDto(User user) {
@@ -72,21 +68,21 @@ public class UserController {
         userDto.setCpf(user.getCpf());
         userDto.setPhone(user.getPhone());
         userDto.setAddresses(
-                user.getAddresses().stream()
-                        .map(address -> {
-                            AddressDto addressDto = new AddressDto();
-                            addressDto.setId(address.getId());
-                            addressDto.setCep(address.getCep());
-                            addressDto.setStreet(address.getStreet());
-                            addressDto.setNumber(address.getNumber());
-                            addressDto.setComplement(address.getComplement());
-                            addressDto.setDistrict(address.getDistrict());
-                            addressDto.setCity(address.getCity());
-                            addressDto.setState(address.getState());
-                            addressDto.setUser(null);
-                            return addressDto;
-                        })
-                        .collect(Collectors.toList())
+            user.getAddresses().stream()
+                    .map(address -> {
+                        AddressDto addressDto = new AddressDto();
+                        addressDto.setId(address.getId());
+                        addressDto.setCep(address.getCep());
+                        addressDto.setStreet(address.getStreet());
+                        addressDto.setNumber(address.getNumber());
+                        addressDto.setComplement(address.getComplement());
+                        addressDto.setDistrict(address.getDistrict());
+                        addressDto.setCity(address.getCity());
+                        addressDto.setState(address.getState());
+                        addressDto.setUser(null);
+                        return addressDto;
+                    })
+                    .collect(Collectors.toList())
         );
 
         return userDto;

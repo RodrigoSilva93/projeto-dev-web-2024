@@ -3,6 +3,7 @@ package br.edu.utfpr.pb.project.server.model;
 import br.edu.utfpr.pb.project.server.annotation.UniqueCpf;
 import br.edu.utfpr.pb.project.server.annotation.UniqueEmail;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -25,6 +26,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonIgnoreProperties("addresses")
 public class User implements UserDetails {
 
     @Id
@@ -66,10 +68,6 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonIgnore
     private List<Address> addresses;
-
-    public void addAddress(Address address) {
-        this.addresses.add(address);
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

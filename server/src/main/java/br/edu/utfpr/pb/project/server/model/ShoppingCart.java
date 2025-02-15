@@ -2,6 +2,7 @@ package br.edu.utfpr.pb.project.server.model;
 
 import br.edu.utfpr.pb.project.server.enums.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -18,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonIgnoreProperties("address")
 public class ShoppingCart {
 
     @Id
@@ -45,19 +47,8 @@ public class ShoppingCart {
 
     @ManyToOne
     @NotNull
-    @JsonIgnore
     @JoinColumn(name = "address_id")
     private Address address;
-
-    public void addProducts(Product product, Integer quantity) {
-        ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct();
-        shoppingCartProduct.setShoppingCart(this);
-        shoppingCartProduct.setProduct(product);
-        shoppingCartProduct.setQuantity(quantity);
-        shoppingCartProduct.calculateFinalPrice();
-        this.shoppingCartProducts.add(shoppingCartProduct);
-        //updateTotalPurchase();
-    }
 
     public void updateTotalPurchase() {
         this.totalPurchase = this.shoppingCartProducts.stream()

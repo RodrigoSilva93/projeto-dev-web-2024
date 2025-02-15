@@ -30,7 +30,6 @@ public abstract class CrudController<T, D, ID extends Serializable>{
     private D convertToDto(T entity){
         return getModelMapper().map(entity, this.typeDtoClass);
     }
-
     private T convertToEntity(D dto){
         return getModelMapper().map(dto, this.typeClass);
     }
@@ -65,11 +64,8 @@ public abstract class CrudController<T, D, ID extends Serializable>{
     @GetMapping("{id}")
     public ResponseEntity<D> findOne(@PathVariable ID id) {
         T entity = getService().findOne(id);
-        if ( entity != null) {
-            return ResponseEntity.ok(convertToDto(entity));
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+        if ( entity != null) return ResponseEntity.ok(convertToDto(entity));
+        else return ResponseEntity.noContent().build();
     }
 
     @PostMapping

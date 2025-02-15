@@ -2,7 +2,6 @@ package br.edu.utfpr.pb.project.server.service.impl;
 
 import br.edu.utfpr.pb.project.server.enums.PaymentStatus;
 import br.edu.utfpr.pb.project.server.model.*;
-import br.edu.utfpr.pb.project.server.repository.AddressRepository;
 import br.edu.utfpr.pb.project.server.repository.ProductRepository;
 import br.edu.utfpr.pb.project.server.repository.ShoppingCartRepository;
 import br.edu.utfpr.pb.project.server.service.AuthService;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,13 +23,11 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
     private final ShoppingCartRepository shoppingCartRepository;
     private final ProductRepository productRepository;
     private final AuthService authService;
-    private final AddressRepository addressRepository;
 
-    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, AuthService authService, AddressRepository addressRepository) {
+    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, AuthService authService) {
         this.shoppingCartRepository = shoppingCartRepository;
         this.productRepository = productRepository;
         this.authService = authService;
-        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -42,16 +40,7 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
         UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         String email = (String) authentication.getPrincipal();
         User user = (User) authService.loadUserByUsername(email);
-
         entity.setUser(user);
-
-
-
-        Address address = addressRepository.findById(entity.getAddress().getId())
-                .orElseThrow(() -> new RuntimeException("Endereço não encontrado"));
-
-        entity.setAddress(address);
-
 
         // Verificamos os carrinhos existentes. A primeira regra é enviar a compra como "PENDING" no banco, antes
         // de finalizar a compra. Quando o usuário confirmar a compra o status muda de "PENDING" para "APPROVED".
@@ -60,6 +49,9 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
         ShoppingCart latestPendingCart = openCarts.isEmpty() ? null : openCarts.getFirst();
 
         if (latestPendingCart != null) {
+            if (!Objects.equals(latestPendingCart.getAddress().getId(), entity.getAddress().getId()))
+                latestPendingCart.setAddress(entity.getAddress());
+
             if (entity.getPayment().equals(PaymentStatus.PENDING))
                 updateShoppingCartProducts(latestPendingCart, entity.getShoppingCartProducts());
             else latestPendingCart.setPayment(PaymentStatus.APPROVED);
@@ -79,11 +71,6 @@ public class ShoppingCartServiceImpl extends CrudServiceImpl<ShoppingCart, Long>
 
             newShoppingCartProducts.add(shoppingCartProduct);
         }
-
-//        savedCart.getShoppingCartProducts().removeIf(existingProduct ->
-//                newShoppingCartProducts.stream().allMatch(newProduct ->
-//                        newProduct.getProduct().getId().equals(existingProduct.getProduct().getId()))
-//        );
 
         savedCart.getShoppingCartProducts().clear();
         savedCart.getShoppingCartProducts().addAll(newShoppingCartProducts);

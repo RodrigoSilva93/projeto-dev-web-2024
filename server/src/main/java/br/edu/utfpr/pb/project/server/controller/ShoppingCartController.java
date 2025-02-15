@@ -1,6 +1,7 @@
 package br.edu.utfpr.pb.project.server.controller;
 
 import br.edu.utfpr.pb.project.server.dto.ShoppingCartDto;
+import br.edu.utfpr.pb.project.server.model.Address;
 import br.edu.utfpr.pb.project.server.model.Product;
 import br.edu.utfpr.pb.project.server.model.ShoppingCart;
 import br.edu.utfpr.pb.project.server.model.ShoppingCartProduct;
@@ -26,15 +27,19 @@ public class ShoppingCartController extends CrudController<ShoppingCart, Shoppin
     private final ModelMapper modelMapper;
 
     private final ICrudService<Product, Long> productRepository;
+    private final ICrudService<Address, Long> addressRepository;
     private final ICrudService<ShoppingCart, Long> shoppingCartRepository;
 
     public ShoppingCartController(IShoppingCartService service, ModelMapper modelMapper,
-                                  ICrudService<Product, Long> productRepository, ICrudService<ShoppingCart, Long> shoppingCartRepository) {
+                                  ICrudService<Product, Long> productRepository,
+                                  ICrudService<ShoppingCart, Long> shoppingCartRepository,
+                                  ICrudService<Address, Long> addressRepository) {
         super(ShoppingCart.class, ShoppingCartDto.class);
         this.service = service;
         this.modelMapper = modelMapper;
         this.productRepository = productRepository;
         this.shoppingCartRepository = shoppingCartRepository;
+        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -53,6 +58,7 @@ public class ShoppingCartController extends CrudController<ShoppingCart, Shoppin
         shoppingCart.setDateTime(cartDto.getDateTime());
         shoppingCart.setPayment(cartDto.getPayment());
         shoppingCart.setTotalPurchase(0.0);
+        shoppingCart.setAddress(addressRepository.findOne(cartDto.getAddress().getId()));
 
         shoppingCart = shoppingCartRepository.save(shoppingCart);
 

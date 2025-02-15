@@ -38,6 +38,7 @@ public class Product {
 
     @Column(name = "image_name")
     private  String imageName;
+
     @Column(name = "content_type")
     private  String contentType;
 

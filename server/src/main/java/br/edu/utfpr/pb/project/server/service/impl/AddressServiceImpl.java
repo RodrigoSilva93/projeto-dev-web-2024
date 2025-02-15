@@ -42,7 +42,7 @@ public class AddressServiceImpl extends CrudServiceImpl<Address, Long> implement
             userRepository.save(user);
             return user.getAddresses().getLast();
         }
-        throw new RuntimeException("User not authenticated.");
+        throw new RuntimeException("Usuário não autenticado.");
     }
 
     @Override
@@ -53,11 +53,11 @@ public class AddressServiceImpl extends CrudServiceImpl<Address, Long> implement
 
         if (user != null) {
             Address address = addressRepository.findById(addressId)
-                    .orElseThrow(() -> new RuntimeException("Address not found."));
+                    .orElseThrow(() -> new RuntimeException("Endereço não encontrado."));
             user.getAddresses().remove(address);
             addressRepository.delete(address);
         }
-        else throw new RuntimeException("User not authenticated.");
+        else throw new RuntimeException("Usuário não autenticado.");
     }
 
     public String searchByCep(String cep) {
@@ -67,7 +67,7 @@ public class AddressServiceImpl extends CrudServiceImpl<Address, Long> implement
         try {
             return restTemplate.getForObject(uri, String.class);
         } catch (Exception e) {
-            throw new RuntimeException("CEP not found.");
+            throw new RuntimeException("CEP não encontrado.");
         }
     }
 }
