@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties("shoppingCarts")
+@JsonIgnoreProperties("users")
 public class Address {
 
     @Id

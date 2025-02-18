@@ -26,7 +26,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonIgnoreProperties("addresses")
 public class User implements UserDetails {
 
     @Id
